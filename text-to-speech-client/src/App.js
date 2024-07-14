@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import AudioPlayer from './components/AudioPlayer';
-import Progress from './components/Progress';
-import { SPEAKERS, DEFAULT_SPEAKER } from './constants';
+import AudioPlayer from './components/AudioPlayer.js';
+import Progress from './components/Progress.js';
+import { SPEAKERS, DEFAULT_SPEAKER } from './constants.js';
 
 const App = () => {
 

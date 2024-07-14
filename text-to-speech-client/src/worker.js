@@ -1,6 +1,6 @@
 
 import { env, Tensor, AutoTokenizer, SpeechT5ForTextToSpeech, SpeechT5HifiGan } from '@xenova/transformers';
-import { encodeWAV } from './utils';
+import { encodeWAV } from './utils.js';
 
 // Disable local model checks
 env.allowLocalModels = false;
