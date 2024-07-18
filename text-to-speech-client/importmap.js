@@ -11,8 +11,8 @@ const sdThis = document.currentScript.src + '/../../../';
 const playcanvasEngine = playcanvasEngineThis;
 // const playcanvasEngine = '/playcanvas-engine-jsdoc/';
 const nodeModules = document.currentScript.src + '/../../node_modules/';
-console.log("document.currentScript.src", document.currentScript.src);
-console.log("nodeModules", nodeModules);
+// console.log("document.currentScript.src", document.currentScript.src);
+// console.log("nodeModules", nodeModules);
 // const nodeModules = playcanvasEngineThis + 'examples/node_modules/';
 const react = {
   'prop-types'               : nodeModules + 'react-es6/prop-types/index.js',
@@ -85,7 +85,8 @@ const imports = {
       //  ONNX
       //};
     `),
-  ...react_min
+  ...react_min,
+  "worker-with-import-map": nodeModules + 'worker-with-import-map/src/index.js',
 };
 const importmap = document.createElement('script');
 importmap.type = 'importmap';

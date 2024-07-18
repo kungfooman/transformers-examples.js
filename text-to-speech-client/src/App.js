@@ -1,8 +1,16 @@
-import {createElement} from 'react';
 import React, {useState, useEffect, useRef} from 'react';
 import AudioPlayer from './components/AudioPlayer.js';
 import Progress from './components/Progress.js';
+import {createElement            } from 'react';
 import {SPEAKERS, DEFAULT_SPEAKER} from './constants.js';
+import {
+  WorkerWithImportMapViaBedfordsShim,
+  WorkerWithImportMapViaInlineFrame, // Works, but no caching
+} from 'worker-with-import-map';
+const url = new URL('./worker.js', import.meta.url);
+//const url = './worker.real.js'; // @todo Should work too.
+const workerWithImportmap = new WorkerWithImportMapViaBedfordsShim(url , {type: 'module', importMap: 'inherit'});
+window.workerWithImportmap = workerWithImportmap;
 const App = () => {
   // Model loading
   const [ready, setReady] = useState(null);
@@ -18,9 +26,8 @@ const App = () => {
   useEffect(() => {
     if (!worker.current) {
       // Create the worker if it does not yet exist.
-      worker.current = new Worker(new URL('./worker.js', import.meta.url), {
-        type: 'module'
-      });
+      //worker.current = new Worker(url, {type: 'module'});
+      worker.current = workerWithImportmap;
     }
     // Create a callback function for messages from the worker thread.
     const onMessageReceived = (e) => {
