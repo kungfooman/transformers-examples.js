@@ -1,7 +1,5 @@
-import './style.css';
-
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 import { pipeline, env, RawImage } from '@xenova/transformers';
 
@@ -148,3 +146,9 @@ function setupScene(url, w, h) {
         setDisplacementMap,
     };
 }
+
+import {TypePanel} from '@runtime-type-inspector/runtime';
+import 'display-anything/src/style.js';
+const typePanel = new TypePanel;
+export {typePanel};
+window.typePanel = typePanel;

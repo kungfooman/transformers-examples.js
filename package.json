@@ -12,6 +12,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-es6": "^1.0.1",
+    "three": "^0.160.1",
     "worker-with-import-map": "1.0.3"
   },
   "devDependencies": {

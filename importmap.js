@@ -10,7 +10,7 @@ const playcanvasEngineThis = document.currentScript.src + '/../../../';
 const sdThis = document.currentScript.src + '/../../../';
 const playcanvasEngine = playcanvasEngineThis;
 // const playcanvasEngine = '/playcanvas-engine-jsdoc/';
-const nodeModules = document.currentScript.src + '/../../node_modules/';
+const nodeModules = document.currentScript.src + '/../node_modules/';
 // console.log("document.currentScript.src", document.currentScript.src);
 // console.log("nodeModules", nodeModules);
 // const nodeModules = playcanvasEngineThis + 'examples/node_modules/';
@@ -90,8 +90,8 @@ const imports = {
   "@runtime-type-inspector/runtime": nodeModules + '@runtime-type-inspector/runtime/index.mjs',
   "display-anything"               : nodeModules + 'display-anything/src/index.js',
   "display-anything/"               : nodeModules + 'display-anything/',
-  "three": "https://unpkg.com/three/build/three.module.js",
-  "three/": "https://unpkg.com/three/",
+  "three": nodeModules + "three/build/three.module.js",
+  "three/": nodeModules + "three/",
 };
 if (location.search.includes("rti")) {
   imports['@xenova/transformers'] = "/transformer/transformers.js-rti/dist/transformers.rti.js";
