@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import LanguageSelector from './components/LanguageSelector';
 import Progress from './components/Progress';
 
-import './App.css'
-
 function App() {
 
   // Model loading

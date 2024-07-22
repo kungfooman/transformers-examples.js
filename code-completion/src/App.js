@@ -1,11 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-
 import Editor from "@monaco-editor/react";
 import Progress from './components/Progress';
-
-import './App.css'
-
-
 const MODELS = [
   'Xenova/tiny_starcoder_py',
   'Xenova/codegen-350M-mono',

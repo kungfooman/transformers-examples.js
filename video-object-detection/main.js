@@ -1,5 +1,3 @@
-import './style.css';
-
 import { env, AutoModel, AutoProcessor, RawImage } from '@xenova/transformers';
 
 // Since we will download the model from the Hugging Face Hub, we can skip the local model check

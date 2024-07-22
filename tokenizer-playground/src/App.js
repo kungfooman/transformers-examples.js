@@ -1,7 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { Token } from './components/Token'
-import './App.css'
-
+import {useCallback, useEffect, useRef, useState} from 'react';
+import {Token} from './components/Token';
 // Define list of tokenizers and their corresponding human-readable names
 const TOKENIZER_OPTIONS = Object.freeze({
   'Xenova/gpt-4': 'gpt-4 / gpt-3.5-turbo / text-embedding-ada-002',

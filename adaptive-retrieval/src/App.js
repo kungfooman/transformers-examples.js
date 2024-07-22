@@ -1,6 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
-import './App.css'
-
+import { useState, useRef, useEffect, useCallback } from 'react';
 const PLACEHOLDER_TEXTS = [
   "A panda is a large black-and-white bear native to China.",
   "The typical life span of a panda is 20 years in the wild.",

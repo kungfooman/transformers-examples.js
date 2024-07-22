@@ -1,6 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
-import './App.css'
-
+import {useState, useRef, useEffect, useCallback} from 'react';
 const PLACEHOLDER_REVIEWS = [
   // battery/charging problems
   "Disappointed with the battery life! The phone barely lasts half a day with regular use. Considering how much I paid for it, I expected better performance in this department.",
