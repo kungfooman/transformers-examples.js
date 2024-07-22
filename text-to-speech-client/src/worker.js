@@ -5,7 +5,6 @@ import { encodeWAV } from './utils.js';
 // Disable local model checks
 env.allowLocalModels = false;
 
-
 // Use the Singleton pattern to enable lazy construction of the pipeline.
 class MyTextToSpeechPipeline {
 
@@ -67,6 +66,9 @@ const speaker_embeddings_cache = new Map();
 
 // Listen for messages from the main thread
 self.addEventListener('message', async (event) => {
+    if (event.data.type === 'rti') {
+        return;
+    }
     // Load the pipeline
     const [tokenizer, model, vocoder] = await MyTextToSpeechPipeline.getInstance(x => {
         // We also add a progress callback so that we can track model loading.

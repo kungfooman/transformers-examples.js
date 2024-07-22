@@ -7,9 +7,18 @@ import {
   WorkerWithImportMapViaBedfordsShim,
   WorkerWithImportMapViaInlineFrame, // Works, but no caching
 } from 'worker-with-import-map';
+import {typePanel} from './main.js';
 const url = new URL('./worker.js', import.meta.url);
 //const url = './worker.real.js'; // @todo Should work too.
 const workerWithImportmap = new WorkerWithImportMapViaBedfordsShim(url , {type: 'module', importMap: 'inherit'});
+workerWithImportmap.addEventListener('message', (e) => {
+  if (e.data.type !== 'rti') {
+    return;
+  }
+  typePanel.handleEvent(e);
+  e.preventDefault();
+  e.stopPropagation();
+});
 window.workerWithImportmap = workerWithImportmap;
 const App = () => {
   // Model loading

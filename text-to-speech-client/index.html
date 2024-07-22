@@ -7,6 +7,12 @@
     <script src="./importmap.js"></script>
     <link rel="stylesheet" href="../tailwind.css">
     <link rel="stylesheet" href="./src/index.css">
+    <style>
+      /* Fix for that tailwind.css makes unstyled buttons borderless */
+      button {
+        border: 1px solid #e5e7eb;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

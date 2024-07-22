@@ -1,7 +1,7 @@
 window.process = {
-    env: {
-        NODE_ENV: 'development'
-    }
+  env: {
+    NODE_ENV: 'development',
+  }
 };
 function importFile(content) {
   return "data:text/javascript;base64," + btoa(content);
@@ -25,13 +25,13 @@ const react = {
   'resolve-pathname'         : nodeModules + 'react-es6/resolve-pathname.mjs',
   'isarray'                  : nodeModules + 'react-es6/isarray.mjs',
 };
-const react_min = {
+const reactMin = {
   ...react,
   'react'           : nodeModules + 'react-es6/build/react.min.mjs',
   'react-dom'       : nodeModules + 'react-es6/build/react-dom.min.mjs',
   'react-dom/client': nodeModules + 'react-es6/build/react-dom-client.min.mjs',
 };
-const { host } = document.location;
+const {host} = document.location;
 const local = host === 'localhost' || host === '127.0.0.1';
 const playcanvas = local ? {
   'playcanvas' : playcanvasEngine + 'src/index.js',
@@ -67,36 +67,42 @@ const imports = {
   '@huggingface/hub'                                       : '../../node_modules/@huggingface/hub/dist/browser/index.mjs',
   'idb'                                                    : '../../node_modules/idb/build/index.js',
   "@aislamov/onnxruntime-web64": importFile(`
-      await import("${sdThis}node_modules/@aislamov/onnxruntime-web64/dist/ort.min.js");
-      await import("${sdThis}node_modules/onnxruntime-common/dist/ort-common.es5.min.js");
-      await import("${sdThis}node_modules/@aislamov/onnxruntime-web64/dist/ort.webgpu.min.js");
-      // tensor = new ort.Tensor('float32', [1,2,3,4], [2, 2])
-      // otherwise no reshape methods
-      //await import("https://cdnjs.cloudflare.com/ajax/libs/onnxruntime-web/1.16.0/ort.es6.min.js");
-      const {registerBackend, env, InferenceSession, Tensor} =  globalThis.ort;
-      const {ort} = globalThis;
-      export {registerBackend, env, InferenceSession, Tensor};
-      export default ort;
-      //export {registerBackend, env, InferenceSession, Tensor};
-      //let ONNX = globalThis.ort;
-      //console.log('ONNX from importmap', ONNX);
-      //export default ONNX;
-      //export {
-      //  ONNX
-      //};
-    `),
-  ...react_min,
-  "worker-with-import-map": nodeModules + 'worker-with-import-map/src/index.js',
+    await import("${sdThis}node_modules/@aislamov/onnxruntime-web64/dist/ort.min.js");
+    await import("${sdThis}node_modules/onnxruntime-common/dist/ort-common.es5.min.js");
+    await import("${sdThis}node_modules/@aislamov/onnxruntime-web64/dist/ort.webgpu.min.js");
+    // tensor = new ort.Tensor('float32', [1,2,3,4], [2, 2])
+    // otherwise no reshape methods
+    //await import("https://cdnjs.cloudflare.com/ajax/libs/onnxruntime-web/1.16.0/ort.es6.min.js");
+    const {registerBackend, env, InferenceSession, Tensor} =  globalThis.ort;
+    const {ort} = globalThis;
+    export {registerBackend, env, InferenceSession, Tensor};
+    export default ort;
+    //export {registerBackend, env, InferenceSession, Tensor};
+    //let ONNX = globalThis.ort;
+    //console.log('ONNX from importmap', ONNX);
+    //export default ONNX;
+    //export {
+    //  ONNX
+    //};
+  `),
+  ...reactMin,
+  "worker-with-import-map"         : nodeModules + 'worker-with-import-map/src/index.js',
+  "@runtime-type-inspector/runtime": nodeModules + '@runtime-type-inspector/runtime/index.mjs',
+  "display-anything"               : nodeModules + 'display-anything/src/index.js',
+  "display-anything/"               : nodeModules + 'display-anything/',
 };
+if (location.search.includes("rti")) {
+  imports['@xenova/transformers'] = "/transformer/transformers.js-rti/dist/transformers.rti.js";
+}
 const importmap = document.createElement('script');
 importmap.type = 'importmap';
-importmap.textContent = JSON.stringify({ imports });
+importmap.textContent = JSON.stringify({imports});
 let node = document.body;
 if (!node) {
-    node = document.head;
+  node = document.head;
 }
 if (!node) {
-    console.error('importmap.js> make sure to either have a <HEAD> or <BODY> before you include this file.');
+  console.error('importmap.js> make sure to either have a <HEAD> or <BODY> before you include this file.');
 } else {
-    node.appendChild(importmap);
+  node.appendChild(importmap);
 }
