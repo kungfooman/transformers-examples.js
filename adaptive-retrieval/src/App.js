@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import {useState, useRef, useEffect, useCallback, createElement, Fragment} from 'react';
+import {Worker} from 'worker-with-import-map';
 const PLACEHOLDER_TEXTS = [
   "A panda is a large black-and-white bear native to China.",
   "The typical life span of a panda is 20 years in the wild.",
@@ -95,77 +96,185 @@ function App() {
   const busy = status !== 'idle';
 
   return (
-    <div className='flex flex-col h-full'>
-      <h1 className='text-2xl md:text-4xl font-bold text-center mb-1'>Adaptive Retrieval w/ Matryoshka Embeddings</h1>
-      <p className='text-lg md:text-xl font-medium text-center mb-2'>Powered by <a href='https://huggingface.co/nomic-ai/nomic-embed-text-v1.5'>Nomic Embed v1.5</a> and <a href='http://huggingface.co/docs/transformers.js'>🤗 Transformers.js</a></p>
-      <div className='flex-grow flex flex-wrap p-4'>
-        <div className='flex flex-col items-center gap-y-1 w-full md:w-1/2'>
-          <label className='text-lg font-medium'>Query</label>
-          <textarea
-            placeholder='Enter source sentence.'
-            className='border w-full p-1 resize-none overflow-hidden h-10'
-            value={source}
-            onChange={e => {
-              setSource(e.target.value);
-              setResults([]);
-              setEmbeddings([]);
-            }}
-          ></textarea>
-          <label className='text-lg font-medium mt-1'>Text</label>
-          <textarea
-            placeholder='Enter sentences to compare with the source sentence. One sentence per line.'
-            className='border w-full p-1 h-full resize-none'
-            value={text}
-            onChange={e => {
-              setText(e.target.value);
-              setResults([]);
-              setEmbeddings([]);
-            }}
-          ></textarea>
-
-          <button
-            className='border py-1 px-2 bg-blue-400 rounded text-white text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed'
-            disabled={busy}
-            onClick={run}>{
-              !busy
-                ? (embeddings.length === 0 ? 'Compute Embeddings' : 'Recompute Embeddings')
-                : status === 'loading'
-                  ? 'Model loading...'
-                  : 'Processing'
-            }</button>
-        </div>
-        <div className='flex flex-col items-center w-full md:w-1/2 gap-y-1'>
-          {embeddings.length > 0 && (<>
-              <label className='text-lg font-medium'>Dimensions</label>
-              <input
-                type="range"
-                min="64"
-                max="768"
-                step="1"
-                value={dimensions}
-                onChange={e => {
-                  setDimensions(e.target.value);
-                }}
-                className="w-[98%] h-[10px]"
-              />
-              <p className="font-bold text-sm">{dimensions}</p>
-              <div className='w-full flex flex-col gap-y-1'>
-                <label className='text-lg font-medium text-center mt-1'>Results</label>
-                <div className='flex flex-col gap-y-1'>
-                  {results.map((result, i) => (
-                    <div key={i} className='flex gap-x-2 border mx-2 p-1'>
-                      <span className='font-bold'>{result.similarity.toFixed(3)}</span>
-                      <span>{result.sentence}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </>)
-          }
-        </div>
-      </div>
-    </div>
-  )
+    createElement(
+      "div",
+      {
+        className: 'flex flex-col h-full',
+      },
+      createElement(
+        "h1",
+        {
+          className: 'text-2xl md:text-4xl font-bold text-center mb-1',
+        },
+        "Adaptive Retrieval w/ Matryoshka Embeddings",
+      ),
+      createElement(
+        "p",
+        {
+          className: 'text-lg md:text-xl font-medium text-center mb-2',
+        },
+        "Powered by ",
+        createElement(
+          "a",
+          {
+            href: 'https://huggingface.co/nomic-ai/nomic-embed-text-v1.5',
+          },
+          "Nomic Embed v1.5",
+        ),
+        " and ",
+        createElement(
+          "a",
+          {
+            href: 'http://huggingface.co/docs/transformers.js',
+          },
+          "🤗 Transformers.js",
+        ),
+      ),
+      createElement(
+        "div",
+        {
+          className: 'flex-grow flex flex-wrap p-4',
+        },
+        createElement(
+          "div",
+          {
+            className: 'flex flex-col items-center gap-y-1 w-full md:w-1/2',
+          },
+          createElement(
+            "label",
+            {
+              className: 'text-lg font-medium',
+            },
+            "Query",
+          ),
+          createElement(
+            "textarea",
+            {
+              placeholder: 'Enter source sentence.',
+              className: 'border w-full p-1 resize-none overflow-hidden h-10',
+              value: source,
+              onChange: (e) => {
+                setSource(e.target.value);
+                setResults([]);
+                setEmbeddings([]);
+              },
+            }
+          ),
+          createElement(
+            "label",
+            {
+              className: 'text-lg font-medium mt-1',
+            },
+            "Text",
+          ),
+          createElement(
+            "textarea",
+            {
+              placeholder: 'Enter sentences to compare with the source sentence. One sentence per line.',
+              className: 'border w-full p-1 h-full resize-none',
+              value: text,
+              onChange: (e) => {
+                setText(e.target.value);
+                setResults([]);
+                setEmbeddings([]);
+              },
+            }
+          ),
+          createElement(
+            "button",
+            {
+              className: 'border py-1 px-2 bg-blue-400 rounded text-white text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed',
+              disabled: busy,
+              onClick: run,
+            },
+            !busy ? (embeddings.length === 0 ? 'Compute Embeddings' : 'Recompute Embeddings') : status === 'loading' ? 'Model loading...' : 'Processing',
+          ),
+        ),
+        createElement(
+          "div",
+          {
+            className: 'flex flex-col items-center w-full md:w-1/2 gap-y-1',
+          },
+          embeddings.length > 0 && (
+            createElement(
+              Fragment,
+              null,
+              createElement(
+                "label",
+                {
+                  className: 'text-lg font-medium',
+                },
+                "Dimensions",
+              ),
+              createElement(
+                "input",
+                {
+                  type: "range",
+                  min: "64",
+                  max: "768",
+                  step: "1",
+                  value: dimensions,
+                  onChange: (e) => {
+                    setDimensions(e.target.value);
+                  },
+                  className: "w-[98%] h-[10px]",
+                }
+              ),
+              createElement(
+                "p",
+                {
+                  className: "font-bold text-sm",
+                },
+                dimensions,
+              ),
+              createElement(
+                "div",
+                {
+                  className: 'w-full flex flex-col gap-y-1',
+                },
+                createElement(
+                  "label",
+                  {
+                    className: 'text-lg font-medium text-center mt-1',
+                  },
+                  "Results",
+                ),
+                createElement(
+                  "div",
+                  {
+                    className: 'flex flex-col gap-y-1',
+                  },
+                  results.map((result, i) => {
+                    return (
+                      createElement(
+                        "div",
+                        {
+                          key: i,
+                          className: 'flex gap-x-2 border mx-2 p-1',
+                        },
+                        createElement(
+                          "span",
+                          {
+                            className: 'font-bold',
+                          },
+                          result.similarity.toFixed(3),
+                        ),
+                        createElement(
+                          "span",
+                          null,
+                          result.sentence,
+                        ),
+                      )
+                    );
+                  }),
+                ),
+              ),
+            )
+          ),
+        ),
+      ),
+    )
+  );
 }
 
 export default App
