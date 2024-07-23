@@ -92,6 +92,8 @@ const imports = {
   "display-anything/"               : nodeModules + 'display-anything/',
   "three": nodeModules + "three/build/three.module.js",
   "three/": nodeModules + "three/",
+  "chart.js": nodeModules + "chart.js/dist/chart.js",
+  "@kurkle/color": nodeModules + "@kurkle/color/dist/color.esm.js",
 };
 if (location.search.includes("rti")) {
   imports['@xenova/transformers'] = "/transformer/transformers.js-rti/dist/transformers.rti.js";

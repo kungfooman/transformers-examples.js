@@ -1,24 +1,18 @@
-
-
-import Chart from 'chart.js/auto';
-import Prism from 'prismjs';
-
+import {Chart, registerables} from 'chart.js';
+// https://github.com/sgratzl/chartjs-chart-wordcloud/issues/4#issuecomment-827304369
+Chart.register(...registerables);
+// @todo Prism has no ESM file and can be replaced with ACE.js
+// import Prism from 'prismjs';
 // Import code and styles for supported languages
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-python';
-import 'prismjs/components/prism-markdown';
-import 'prismjs/components/prism-clike';
-import 'prismjs/themes/prism.css'
-
-import './theme.css';
-import './style.css';
-
+// import 'prismjs/components/prism-javascript';
+// import 'prismjs/components/prism-python';
+// import 'prismjs/components/prism-markdown';
+// import 'prismjs/components/prism-clike';
+import {Worker} from 'worker-with-import-map';
 // Initialise worker
 const worker = new Worker(new URL('./worker.js', import.meta.url), {
   type: 'module',
 });
-
-
 // Define elements
 const TASK_SELECTOR = document.getElementById('task');
 
@@ -302,7 +296,7 @@ const CODE_BLOCKS = {};
     CODE_HIGHLIGHT_CONTENT.innerHTML = escapeHtml(text);
 
     // Syntax Highlight
-    Prism.highlightElement(CODE_HIGHLIGHT_CONTENT);
+    // Prism.highlightElement(CODE_HIGHLIGHT_CONTENT);
   }
 
   // Update code function
