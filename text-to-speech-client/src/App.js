@@ -3,15 +3,12 @@ import AudioPlayer from './components/AudioPlayer.js';
 import Progress from './components/Progress.js';
 import {createElement            } from 'react';
 import {SPEAKERS, DEFAULT_SPEAKER} from './constants.js';
-import {
-  WorkerWithImportMapViaBedfordsShim,
-  WorkerWithImportMapViaInlineFrame, // Works, but no caching
-} from 'worker-with-import-map';
+import {Worker} from 'worker-with-import-map';
 import {typePanel} from './main.js';
 const url = new URL('./worker.js', import.meta.url);
-//const url = './worker.real.js'; // @todo Should work too.
-const workerWithImportmap = new WorkerWithImportMapViaBedfordsShim(url , {type: 'module', importMap: 'inherit'});
-workerWithImportmap.addEventListener('message', (e) => {
+// const url = './src/worker.js'; // Relative to document.baseURI
+const worker = new Worker(url , {type: 'module'});
+worker.addEventListener('message', (e) => {
   if (e.data.type !== 'rti') {
     return;
   }
@@ -19,7 +16,7 @@ workerWithImportmap.addEventListener('message', (e) => {
   e.preventDefault();
   e.stopPropagation();
 });
-window.workerWithImportmap = workerWithImportmap;
+window.worker = worker;
 const App = () => {
   // Model loading
   const [ready, setReady] = useState(null);
@@ -30,13 +27,13 @@ const App = () => {
   const [selectedSpeaker, setSelectedSpeaker] = useState(DEFAULT_SPEAKER);
   const [output, setOutput] = useState(null);
   // Create a reference to the worker object.
-  const worker = useRef(null);
+  const workerRef = useRef(null);
   // We use the `useEffect` hook to setup the worker as soon as the `App` component is mounted.
   useEffect(() => {
-    if (!worker.current) {
+    if (!workerRef.current) {
       // Create the worker if it does not yet exist.
       //worker.current = new Worker(url, {type: 'module'});
-      worker.current = workerWithImportmap;
+      workerRef.current = worker;
     }
     // Create a callback function for messages from the worker thread.
     const onMessageReceived = (e) => {
@@ -75,13 +72,13 @@ const App = () => {
       }
     };
     // Attach the callback function as an event listener.
-    worker.current.addEventListener('message', onMessageReceived);
+    workerRef.current.addEventListener('message', onMessageReceived);
     // Define a cleanup function for when the component is unmounted.
-    return () => worker.current.removeEventListener('message', onMessageReceived);
+    return () => workerRef.current.removeEventListener('message', onMessageReceived);
   });
   const handleGenerateSpeech = () => {
     setDisabled(true);
-    worker.current.postMessage({
+    workerRef.current.postMessage({
       text,
       speaker_id: selectedSpeaker,
     });
