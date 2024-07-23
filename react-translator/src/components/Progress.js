@@ -1,9 +1,26 @@
-
-export default function Progress({ text, percentage }) {
+import {createElement} from 'react';
+function Progress({ text, percentage }) {
   percentage = percentage ?? 0;
   return (
-    <div className="progress-container">
-      <div className='progress-bar' style={{ 'width': `${percentage}%` }}>{text} ({`${percentage.toFixed(2)}%`})</div>
-    </div>
+    createElement(
+      "div",
+      {
+        className: "progress-container",
+      },
+      createElement(
+        "div",
+        {
+          className: 'progress-bar',
+          style: {
+            'width': `${percentage}%`
+          },
+        },
+        text,
+        " (",
+        `${percentage.toFixed(2)}%`,
+        ")",
+      ),
+    )
   );
 }
+export {Progress};

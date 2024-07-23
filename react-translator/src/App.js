@@ -1,23 +1,19 @@
-import { useEffect, useRef, useState } from 'react'
-import LanguageSelector from './components/LanguageSelector';
-import Progress from './components/Progress';
-
+import {useEffect, useRef, useState, createElement, Fragment} from 'react';
+import {LanguageSelector                                    } from './components/LanguageSelector.js';
+import {Progress                                            } from './components/Progress.js';
+import {Worker                                              } from 'worker-with-import-map';
 function App() {
-
   // Model loading
   const [ready, setReady] = useState(null);
   const [disabled, setDisabled] = useState(false);
   const [progressItems, setProgressItems] = useState([]);
-
   // Inputs and outputs
   const [input, setInput] = useState('I love walking my dog.');
   const [sourceLanguage, setSourceLanguage] = useState('eng_Latn');
   const [targetLanguage, setTargetLanguage] = useState('fra_Latn');
   const [output, setOutput] = useState('');
-
   // Create a reference to the worker object.
   const worker = useRef(null);
-
   // We use the `useEffect` hook to setup the worker as soon as the `App` component is mounted.
   useEffect(() => {
     if (!worker.current) {
@@ -89,36 +85,114 @@ function App() {
   }
 
   return (
-    <>
-      <h1>Transformers.js</h1>
-      <h2>ML-powered multilingual translation in React!</h2>
-
-      <div className='container'>
-        <div className='language-container'>
-          <LanguageSelector type={"Source"} defaultLanguage={"eng_Latn"} onChange={x => setSourceLanguage(x.target.value)} />
-          <LanguageSelector type={"Target"} defaultLanguage={"fra_Latn"} onChange={x => setTargetLanguage(x.target.value)} />
-        </div>
-
-        <div className='textbox-container'>
-          <textarea value={input} rows={3} onChange={e => setInput(e.target.value)}></textarea>
-          <textarea value={output} rows={3} readOnly></textarea>
-        </div>
-      </div>
-
-      <button disabled={disabled} onClick={translate}>Translate</button>
-
-      <div className='progress-bars-container'>
-        {ready === false && (
-          <label>Loading models... (only run once)</label>
-        )}
-        {progressItems.map(data => (
-          <div key={data.file}>
-            <Progress text={data.file} percentage={data.progress} />
-          </div>
-        ))}
-      </div>
-    </>
-  )
+    createElement(
+      Fragment,
+      null,
+      createElement(
+        "h1",
+        null,
+        "Transformers.js",
+      ),
+      createElement(
+        "h2",
+        null,
+        "ML-powered multilingual translation in React!",
+      ),
+      createElement(
+        "div",
+        {
+          className: 'container',
+        },
+        createElement(
+          "div",
+          {
+            className: 'language-container',
+          },
+          createElement(
+            LanguageSelector,
+            {
+              type: "Source",
+              defaultLanguage: "eng_Latn",
+              onChange: (x) => {
+                return setSourceLanguage(x.target.value);
+              },
+            }
+          ),
+          createElement(
+            LanguageSelector,
+            {
+              type: "Target",
+              defaultLanguage: "fra_Latn",
+              onChange: (x) => {
+                return setTargetLanguage(x.target.value);
+              },
+            }
+          ),
+        ),
+        createElement(
+          "div",
+          {
+            className: 'textbox-container',
+          },
+          createElement(
+            "textarea",
+            {
+              value: input,
+              rows: 3,
+              onChange: (e) => {
+                return setInput(e.target.value);
+              },
+            }
+          ),
+          createElement(
+            "textarea",
+            {
+              value: output,
+              rows: 3,
+              readOnly: true,
+            }
+          ),
+        ),
+      ),
+      createElement(
+        "button",
+        {
+          disabled,
+          onClick: translate,
+        },
+        "Translate",
+      ),
+      createElement(
+        "div",
+        {
+          className: 'progress-bars-container',
+        },
+        ready === false && (
+          createElement(
+            "label",
+            null,
+            "Loading models... (only run once)",
+          )
+        ),
+        progressItems.map((data) => {
+          return (
+            createElement(
+              "div",
+              {
+                key: data.file,
+              },
+              createElement(
+                Progress,
+                {
+                  text: data.file,
+                  percentage: data.progress,
+                }
+              ),
+            )
+          );
+        }),
+      ),
+    )
+  );
 }
-
-export default App
+export {App};

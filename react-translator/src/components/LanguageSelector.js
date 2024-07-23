@@ -1,7 +1,6 @@
-
+import {createElement} from 'react';
 // The full list of languages in FLORES-200 is available here:
 // https://github.com/facebookresearch/flores/blob/main/flores200/README.md#languages-in-flores-200
-
 const LANGUAGES = {
   "Acehnese (Arabic script)": "ace_Arab",
   "Acehnese (Latin script)": "ace_Latn",
@@ -207,17 +206,42 @@ const LANGUAGES = {
   "Yoruba": "yor_Latn",
   "Yue Chinese": "yue_Hant",
   "Zulu": "zul_Latn",
-}
-
-export default function LanguageSelector({ type, onChange, defaultLanguage }) {
+};
+function LanguageSelector({
+  type,
+  onChange,
+  defaultLanguage
+}) {
   return (
-    <div className='language-selector'>
-      <label>{type}: </label>
-      <select onChange={onChange} defaultValue={defaultLanguage}>
-        {Object.entries(LANGUAGES).map(([key, value]) => {
-          return <option key={key} value={value}>{key}</option>
-        })}
-      </select>
-    </div>
-  )
-}
+    createElement(
+      "div",
+      {
+        className: 'language-selector',
+      },
+      createElement(
+        "label",
+        null,
+        type,
+        ": ",
+      ),
+      createElement(
+        "select",
+        {
+          onChange,
+          defaultValue: defaultLanguage,
+        },
+        Object.entries(LANGUAGES).map(([key, value]) => {
+          return createElement(
+            "option",
+            {
+              key,
+              value,
+            },
+            key,
+          );
+        }),
+      ),
+    )
+  );
+};
+export {LanguageSelector};
