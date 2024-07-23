@@ -1,11 +1,8 @@
 import { AutoModel, AutoProcessor, env, RawImage } from '@xenova/transformers';
-
 // Since we will download the model from the Hugging Face Hub, we can skip the local model check
 env.allowLocalModels = false;
-
 // Proxy the WASM backend to prevent the UI from freezing
 env.backends.onnx.wasm.proxy = true;
-
 // Constants
 const EXAMPLE_URL = 'https://images.pexels.com/photos/5965592/pexels-photo-5965592.jpeg?auto=compress&cs=tinysrgb&w=1024';
 
