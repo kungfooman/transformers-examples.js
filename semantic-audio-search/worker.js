@@ -1,6 +1,6 @@
 
 import { env, AutoTokenizer, ClapTextModelWithProjection } from '@xenova/transformers';
-import { getCachedFile } from './utils';
+import { getCachedFile } from './utils.js';
 
 // Skip local model check
 env.allowLocalModels = false;

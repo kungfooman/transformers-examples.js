@@ -94,6 +94,8 @@ const imports = {
   "three/": nodeModules + "three/",
   "chart.js": nodeModules + "chart.js/dist/chart.js",
   "@kurkle/color": nodeModules + "@kurkle/color/dist/color.esm.js",
+  // "deepscatter": "https://cdn.jsdelivr.net/npm/deepscatter@2.15.2/+esm",
+  "deepscatter": nodeModules + "deepscatter/dist/deepscatter.js",
 };
 if (location.search.includes("rti")) {
   imports['@xenova/transformers'] = "/transformer/transformers.js-rti/dist/transformers.rti.js";

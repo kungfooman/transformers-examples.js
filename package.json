@@ -12,6 +12,7 @@
     "@runtime-type-inspector/runtime": "^4.0.0",
     "@xenova/transformers": "^2.7.0",
     "chart.js": "4.3.0",
+    "deepscatter": "^2.15.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-es6": "^1.0.1",

@@ -1,6 +1,7 @@
 
 import Scatterplot from 'deepscatter';
-import { getCachedJSON } from './utils';
+import { getCachedJSON } from './utils.js';
+import {Worker} from 'worker-with-import-map';
 
 // Start loading metadata and positions asynchronously as soon as possible.
 let metadata = {};
