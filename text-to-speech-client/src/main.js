@@ -1,13 +1,10 @@
-import {createElement} from 'react';
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App.js';
-import {TypePanel} from '@runtime-type-inspector/runtime';
-import 'display-anything/src/style.js';
+import {StrictMode, createElement} from 'react';
+import {createRoot               } from 'react-dom/client';
+import {App                      } from './App.js';
 const div = document.getElementById('root');
-ReactDOM.createRoot(div).render(
+createRoot(div).render(
   createElement(
-    React.StrictMode,
+    StrictMode,
     null,
     createElement(
       App,
@@ -15,6 +12,3 @@ ReactDOM.createRoot(div).render(
     ),
   ),
 );
-const typePanel = new TypePanel;
-export {typePanel};
-window.typePanel = typePanel;

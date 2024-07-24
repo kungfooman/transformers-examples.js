@@ -1,22 +1,8 @@
-import React, {useState, useEffect, useRef} from 'react';
+import {useState, useEffect, useRef, createElement} from 'react';
 import AudioPlayer from './components/AudioPlayer.js';
 import Progress from './components/Progress.js';
-import {createElement            } from 'react';
 import {SPEAKERS, DEFAULT_SPEAKER} from './constants.js';
-import {Worker} from 'worker-with-import-map';
-import {typePanel} from './main.js';
-const url = new URL('./worker.js', import.meta.url);
-// const url = './src/worker.js'; // Relative to document.baseURI
-const worker = new Worker(url , {type: 'module'});
-worker.addEventListener('message', (e) => {
-  if (e.data.type !== 'rti') {
-    return;
-  }
-  typePanel.handleEvent(e);
-  e.preventDefault();
-  e.stopPropagation();
-});
-window.worker = worker;
+import {Worker} from 'rti-worker';
 const App = () => {
   // Model loading
   const [ready, setReady] = useState(null);
@@ -32,8 +18,7 @@ const App = () => {
   useEffect(() => {
     if (!workerRef.current) {
       // Create the worker if it does not yet exist.
-      //worker.current = new Worker(url, {type: 'module'});
-      workerRef.current = worker;
+      workerRef.current = new Worker(new URL('./worker.js', import.meta.url), {type: 'module'});
     }
     // Create a callback function for messages from the worker thread.
     const onMessageReceived = (e) => {
@@ -236,4 +221,4 @@ const App = () => {
     )
   );
 };
-export default App;
+export {App};
