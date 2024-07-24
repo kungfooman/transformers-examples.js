@@ -1,0 +1,7 @@
+/*
+Fix for that tailwind.css makes unstyled buttons borderless
+Todo targeting RTI class when available
+*/
+button {
+  border: 2px solid #e5e7eb;
+}
