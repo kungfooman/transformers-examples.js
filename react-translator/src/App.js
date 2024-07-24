@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState, createElement, Fragment} from 'react';
 import {LanguageSelector                                    } from './components/LanguageSelector.js';
 import {Progress                                            } from './components/Progress.js';
-import {Worker                                              } from 'worker-with-import-map';
+import {Worker                                              } from 'rti-worker';
 function App() {
   // Model loading
   const [ready, setReady] = useState(null);

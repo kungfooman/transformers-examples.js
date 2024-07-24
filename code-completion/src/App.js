@@ -1,5 +1,5 @@
 import {useState, useRef, useEffect, createElement} from "react";
-import {Worker} from 'worker-with-import-map';
+import {Worker} from 'rti-worker';
 import Editor from "@monaco-editor/react";
 import Progress from './components/Progress.js';
 const MODELS = [

@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useRef, useState, createElement} from 'react';
-import {Token} from './components/Token.js';
-import {Worker} from 'worker-with-import-map';
+import {Token } from './components/Token.js';
+import {Worker} from 'rti-worker';
 // Define list of tokenizers and their corresponding human-readable names
 const TOKENIZER_OPTIONS = Object.freeze({
   'Xenova/gpt-4': 'gpt-4 / gpt-3.5-turbo / text-embedding-ada-002',

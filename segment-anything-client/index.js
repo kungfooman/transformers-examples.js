@@ -1,4 +1,4 @@
-
+import {Worker} from 'rti-worker';
 // Reference the elements we will use
 const statusLabel = document.getElementById('status');
 const fileUpload = document.getElementById('upload');
@@ -23,7 +23,7 @@ const BASE_URL = 'https://huggingface.co/datasets/Xenova/transformers.js-docs/re
 const EXAMPLE_URL = BASE_URL + 'corgi.jpg';
 
 // Create a web worker so that the main (UI) thread is not blocked during inference.
-const worker = new Worker('worker.js', {
+const worker = new Worker('./worker.js', {
     type: 'module',
 });
 

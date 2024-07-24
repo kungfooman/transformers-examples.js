@@ -8,7 +8,7 @@ Chart.register(...registerables);
 // import 'prismjs/components/prism-python';
 // import 'prismjs/components/prism-markdown';
 // import 'prismjs/components/prism-clike';
-import {Worker} from 'worker-with-import-map';
+import {Worker} from 'rti-worker';
 // Initialise worker
 const worker = new Worker(new URL('./worker.js', import.meta.url), {
   type: 'module',

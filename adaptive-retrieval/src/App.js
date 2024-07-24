@@ -1,5 +1,5 @@
 import {useState, useRef, useEffect, useCallback, createElement, Fragment} from 'react';
-import {Worker} from 'worker-with-import-map';
+import {Worker} from 'rti-worker';
 const PLACEHOLDER_TEXTS = [
   "A panda is a large black-and-white bear native to China.",
   "The typical life span of a panda is 20 years in the wild.",

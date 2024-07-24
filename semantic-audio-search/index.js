@@ -1,8 +1,7 @@
 
 import Scatterplot from 'deepscatter';
-import { getCachedJSON } from './utils.js';
-import {Worker} from 'worker-with-import-map';
-
+import {getCachedJSON} from './utils.js';
+import {Worker       } from 'rti-worker';
 // Start loading metadata and positions asynchronously as soon as possible.
 let metadata = {};
 getCachedJSON('https://huggingface.co/datasets/Xenova/MusicBenchEmbedded/resolve/main/metadata.json')

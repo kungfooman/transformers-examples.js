@@ -1,5 +1,5 @@
 import {useState, useRef, useEffect, useCallback, createElement} from 'react';
-import {Worker} from 'worker-with-import-map';
+import {Worker} from 'rti-worker';
 const PLACEHOLDER_REVIEWS = [
   // battery/charging problems
   "Disappointed with the battery life! The phone barely lasts half a day with regular use. Considering how much I paid for it, I expected better performance in this department.",

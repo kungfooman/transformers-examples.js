@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect, useCallback, createElement, Fragment } from 'react';
-import {WorkerWithImportMapViaBedfordsShim} from 'worker-with-import-map';
+import {useState, useRef, useEffect, useCallback, createElement, Fragment} from 'react';
+import {Worker} from 'rti-worker';
 const PLACEHOLDER_TEXTS = [
   "'To Kill a Mockingbird' is a novel by Harper Lee published in 1960. It was immediately successful, winning the Pulitzer Prize, and has become a classic of modern American literature.",
   "The novel 'Moby-Dick' was written by Herman Melville and first published in 1851. It is considered a masterpiece of American literature and deals with complex themes of obsession, revenge, and the conflict between good and evil.",
@@ -24,7 +24,7 @@ function App() {
   useEffect(() => {
     if (!worker.current) {
       // Create the worker if it does not yet exist.
-      worker.current = new WorkerWithImportMapViaBedfordsShim(new URL('./worker.js', import.meta.url), {
+      worker.current = new Worker(new URL('./worker.js', import.meta.url), {
         type: 'module',
         importMap: 'inherit',
       });
