@@ -84,7 +84,7 @@ function renderBox([xmin, ymin, xmax, ymax, score, id], [w, h]) {
 let isProcessing = false;
 let previousTime;
 const context = canvas.getContext('2d', { willReadFrequently: true });
-function updateCanvas() {
+function updateCanvas(video) {
     const { width, height } = canvas;
     context.drawImage(video, 0, 0, width, height);
 
@@ -114,7 +114,7 @@ function updateCanvas() {
         })();
     }
 
-    window.requestAnimationFrame(updateCanvas);
+    window.requestAnimationFrame(() => updateCanvas(video));
 }
 
 // Start the video stream
@@ -138,7 +138,8 @@ navigator.mediaDevices.getUserMedia(
     container.style.height = `${ch}px`;
 
     // Start the animation loop
-    window.requestAnimationFrame(updateCanvas);
+    window.requestAnimationFrame(() => updateCanvas(video));
 }).catch((error) => {
     alert(error);
 });
+Object.assign(window, {video, canvas, updateCanvas});
