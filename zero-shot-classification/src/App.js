@@ -1,4 +1,5 @@
-import {useState, useRef, useEffect, useCallback} from 'react';
+import {useState, useRef, useEffect, useCallback, createElement} from 'react';
+import {Worker} from 'worker-with-import-map';
 const PLACEHOLDER_REVIEWS = [
   // battery/charging problems
   "Disappointed with the battery life! The phone barely lasts half a day with regular use. Considering how much I paid for it, I expected better performance in this department.",
@@ -24,8 +25,7 @@ const PLACEHOLDER_REVIEWS = [
   "I'm not sure what to make of this phone. It's not bad, but it's not great either. I'm on the fence about it.",
   "I hate the color of this phone. It's so ugly!",
   "This phone sucks! I'm returning it."
-].sort(() => Math.random() - 0.5)
-
+].sort(() => Math.random() - 0.5);
 const PLACEHOLDER_SECTIONS = [
   'Battery and charging problems',
   'Overheating',
@@ -33,20 +33,14 @@ const PLACEHOLDER_SECTIONS = [
   'Software issues',
   'Other',
 ];
-
 function App() {
-
   const [text, setText] = useState(PLACEHOLDER_REVIEWS.join('\n'));
-
   const [sections, setSections] = useState(
     PLACEHOLDER_SECTIONS.map(title => ({ title, items: [] }))
   );
-
   const [status, setStatus] = useState('idle');
-
   // Create a reference to the worker object.
   const worker = useRef(null);
-
   // We use the `useEffect` hook to setup the worker as soon as the `App` component is mounted.
   useEffect(() => {
     if (!worker.current) {
@@ -55,7 +49,6 @@ function App() {
         type: 'module'
       });
     }
-
     // Create a callback function for messages from the worker thread.
     const onMessageReceived = (e) => {
       const status = e.data.status;
@@ -64,11 +57,9 @@ function App() {
       } else if (status === 'ready') {
         setStatus('ready');
       } else if (status === 'output') {
-        const { sequence, labels, scores } = e.data.output;
-
+        const {sequence, labels, scores} = e.data.output;
         // Threshold for classification
         const label = scores[0] > 0.5 ? labels[0] : 'Other';
-
         const sectionID = sections.map(x => x.title).indexOf(label) ?? sections.length - 1;
         setSections((sections) => {
           const newSections = [...sections]
@@ -82,14 +73,11 @@ function App() {
         setStatus('idle');
       }
     };
-
     // Attach the callback function as an event listener.
     worker.current.addEventListener('message', onMessageReceived);
-
     // Define a cleanup function for when the component is unmounted.
     return () => worker.current.removeEventListener('message', onMessageReceived);
   }, [sections]);
-
   const classify = useCallback(() => {
     setStatus('processing');
     worker.current.postMessage({
@@ -97,91 +85,146 @@ function App() {
       labels: sections.slice(0, sections.length - 1).map(section => section.title)
     });
   }, [text, sections])
-
   const busy = status !== 'idle';
-
   return (
-    <div className='flex flex-col h-full'>
-      <textarea
-        className='border w-full p-1 h-1/2'
-        value={text}
-        onChange={e => setText(e.target.value)}
-      ></textarea>
-      <div className='flex flex-col justify-center items-center m-2 gap-1'>
-        <button
-          className='border py-1 px-2 bg-blue-400 rounded text-white text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed'
-          disabled={busy}
-          onClick={classify}>{
-            !busy
-              ? 'Categorize'
-              : status === 'loading'
-                ? 'Model loading...'
-                : 'Processing'
-          }</button>
-        <div className='flex gap-1'>
-          <button
-            className='border py-1 px-2 bg-green-400 rounded text-white text-sm font-medium'
-            onClick={e => {
-              setSections((sections) => {
-                const newSections = [...sections];
-                // add at position 2 from the end
-                newSections.splice(newSections.length - 1, 0, {
-                  title: 'New Category',
-                  items: [],
-                })
-                return newSections;
-              })
-            }}>Add category</button>
-          <button
-            className='border py-1 px-2 bg-red-400 rounded text-white text-sm font-medium'
-            disabled={sections.length <= 1}
-            onClick={e => {
-              setSections((sections) => {
-                const newSections = [...sections];
-                newSections.splice(newSections.length - 2, 1); // Remove second last element
-                return newSections;
-              })
-            }}>Remove category</button>
-          <button
-            className='border py-1 px-2 bg-orange-400 rounded text-white text-sm font-medium'
-            onClick={e => {
-              setSections((sections) => (sections.map(section => ({
-                ...section,
-                items: [],
-              }))))
-            }}>Clear</button>
-        </div>
-      </div>
+    createElement(
+      "div",
+      {
+        className: 'flex flex-col h-full',
+      },
+      createElement(
+        "textarea",
+        {
+          className: 'border w-full p-1 h-1/2',
+          value: text,
+          onChange: (e) => {
+            return setText(e.target.value);
+          },
+        }
+      ),
+      createElement(
+        "div",
+        {
+          className: 'flex flex-col justify-center items-center m-2 gap-1',
+        },
+        createElement(
+          "button",
+          {
+            className: 'border py-1 px-2 bg-blue-400 rounded text-white text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed',
+            disabled: busy,
+            onClick: classify,
+          },
+          !busy ? 'Categorize' : status === 'loading' ? 'Model loading...' : 'Processing',
+        ),
+        createElement(
+          "div",
+          {
+            className: 'flex gap-1',
+          },
+          createElement(
+            "button",
+            {
+              className: 'border py-1 px-2 bg-green-400 rounded text-white text-sm font-medium',
+              onClick: (e) => {
+                setSections((sections) => {
+                  const newSections = [...sections]; // add at position 2 from the end
 
-      <div className='flex justify-between flex-grow overflow-x-auto max-h-[40%]'>
-        {sections.map((section, index) => (
-          <div
-            key={index}
-            className="flex flex-col w-full"
-          >
-            <input
-              disabled={section.title === 'Other'}
-              className="w-full border px-1 text-center"
-              value={section.title} onChange={e => {
+                  newSections.splice(newSections.length - 1, 0, {
+                    title: 'New Category',
+                    items: [],
+                  });
+                  return newSections;
+                });
+              },
+            },
+            "Add category",
+          ),
+          createElement(
+            "button",
+            {
+              className: 'border py-1 px-2 bg-red-400 rounded text-white text-sm font-medium',
+              disabled: sections.length <= 1,
+              onClick: (e) => {
                 setSections((sections) => {
                   const newSections = [...sections];
-                  newSections[index].title = e.target.value;
-                  return newSections;
-                })
-              }}></input>
-            <div className="overflow-y-auto h-full border">
-              {section.items.map((item, index) => (
-                <div
-                  className="m-2 border bg-red-50 rounded p-1 text-sm"
-                  key={index}>{item}
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
+                  newSections.splice(newSections.length - 2, 1); // Remove second last element
 
-export default App
+                  return newSections;
+                });
+              },
+            },
+            "Remove category",
+          ),
+          createElement(
+            "button",
+            {
+              className: 'border py-1 px-2 bg-orange-400 rounded text-white text-sm font-medium',
+              onClick: (e) => {
+                setSections((sections) => {
+                  return sections.map((section) => {
+                    return {
+                      ...section,
+                      items: [],
+                    };
+                  });
+                });
+              },
+            },
+            "Clear",
+          ),
+        ),
+      ),
+      createElement(
+        "div",
+        {
+          className: 'flex justify-between flex-grow overflow-x-auto max-h-[40%]',
+        },
+        sections.map((section, index) => {
+          return (
+            createElement(
+              "div",
+              {
+                key: index,
+                className: "flex flex-col w-full",
+              },
+              createElement(
+                "input",
+                {
+                  disabled: section.title === 'Other',
+                  className: "w-full border px-1 text-center",
+                  value: section.title,
+                  onChange: (e) => {
+                    setSections((sections) => {
+                      const newSections = [...sections];
+                      newSections[index].title = e.target.value;
+                      return newSections;
+                    });
+                  },
+                }
+              ),
+              createElement(
+                "div",
+                {
+                  className: "overflow-y-auto h-full border",
+                },
+                section.items.map((item, index) => {
+                  return (
+                    createElement(
+                      "div",
+                      {
+                        className: "m-2 border bg-red-50 rounded p-1 text-sm",
+                        key: index,
+                      },
+                      item,
+                    )
+                  );
+                }),
+              ),
+            )
+          );
+        }),
+      ),
+    )
+  );
+}
+export {App};
